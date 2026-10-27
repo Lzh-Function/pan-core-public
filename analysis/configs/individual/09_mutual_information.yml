@@ -1,0 +1,37 @@
+# Config for 09_mutual_information.py
+# Usage: python analysis/scripts/compute/09_mutual_information.py --config analysis/configs/individual/09_mutual_information.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+model_name: your_model
+checkpoint_dir: /path/to/your_model/checkpoints
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/single_chiral_rs_probe.csv
+output_dir: /path/to/results/mutual_information
+
+# The evaluation CSV must contain one binary R/S label per input and may use -1
+# for samples without a canonical @/@@ label.
+src_col: random
+rs_label_col: rs_label_id
+canonical_token_label_col: canonical_chiral_token_id
+
+# ── Optional (v5 defaults shown) ──────────────────────────────────────────────
+seed: 42
+batch_size: 512
+max_len: 512
+probe_layers: [0, 2, 5, 7]
+chiral_window: 2
+n_splits: 5
+min_samples: 50
+n_probe_shuffle: 5
+n_jobs: -1
+
+enable_nonlinear_probe: true
+enable_canonical_token_probe: true
+# Control: input @/@@ token identity per probe layer (paper Section C control claim).
+# The paper value was computed on valid_10k.csv (random SMILES) with probe_layers [0..7].
+enable_token_identity_probe: false
+mlp_epochs: 200
+rf_estimators: 100
+
+# Subset of training steps; null = all checkpoint-* directories.
+checkpoint_steps: ~

@@ -1,0 +1,24 @@
+# Config for 16_mutual_information.py
+# Usage: python analysis/scripts/visualize/16_mutual_information.py --config analysis/configs/individual/16_mutual_information.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+# input_dir contains {model_name}/mutual_information_{model_name}.json.
+input_dir: /path/to/results/mutual_information
+output_dir: /path/to/figures/mutual_information
+
+# ── Optional ──────────────────────────────────────────────────────────────────
+# null/omitted = auto-discover all model subdirectories.
+models:
+  - your_model
+
+# Directory containing {model_name}/logits_metrics_trajectory.csv.
+jump_logits_dir: /path/to/results/jumpup_metrics
+jump_threshold_ratio: 0.15
+jump_ignore_initial_n: 10
+figsize: [14, 5]
+
+display_names:
+  your_model: Your model
+
+colors:
+  your_model: tab:blue

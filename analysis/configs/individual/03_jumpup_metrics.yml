@@ -1,0 +1,28 @@
+# Config for 03_jumpup_metrics.py
+# Usage: python analysis/scripts/compute/03_jumpup_metrics.py --config analysis/configs/individual/03_jumpup_metrics.yml
+#
+# This is the heaviest compute script (~24h on a single GPU for a full checkpoint run).
+# Consider restricting checkpoint_steps to a subset during development.
+
+# ── Required ──────────────────────────────────────────────────────────────────
+model_name: your_model
+checkpoint_dir: /path/to/your_model/checkpoints
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/sampled_valid_1k_seed_42.csv
+output_dir: /path/to/results/jumpup_metrics
+
+# ── Optional (paper settings shown) ───────────────────────────────────────────
+src_col: random
+tgt_col: canonical
+seed: 42
+batch_size: 128
+max_len: 402                   # max encoder input length in tokens
+compute_graph_metrics: true    # set false to skip RDKit graph distance (saves time)
+
+# Analyse only one 1-based block of max_phase equal blocks (paper: phase 1 of 5 = ZINC20).
+# null/null = all rows.
+phase: 1
+max_phase: 5
+
+# Subset of training steps to process; null = all checkpoints in checkpoint_dir.
+checkpoint_steps: ~

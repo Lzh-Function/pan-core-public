@@ -1,0 +1,40 @@
+# Config for 07_head_ablation.py
+# Usage: python analysis/scripts/compute/07_head_ablation.py --config analysis/configs/individual/07_head_ablation.yml
+#
+# Ablates individual attention heads and random controls to identify chiral-relevant heads
+# (paper Table 4 / S5). Requires the jump-up interval start, peak and end checkpoints of
+# analysis 03 and the final checkpoint (paper: checkpoint-700000 of the 5,000-step series).
+# The end-to-end runner resolves these automatically.
+
+# ── Required ──────────────────────────────────────────────────────────────────
+model_name: your_model   # arbitrary label used in output paths
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/valid_10k.csv
+output_dir: /path/to/results/head_ablation
+
+# Chiral heads of the checkpoint being ablated (visualization 12, attention_mass_enc_head_ranking.csv).
+# chiral_heads: top heads by interval_amplitude; ablated at before_jump, jump_peak, after_jump.
+chiral_heads:
+  - [your_layer_index, your_head_index]
+# final_chiral_heads: top heads by last_step_mass at the final checkpoint; ablated at final.
+# Use the same list as chiral_heads if the heads did not change.
+final_chiral_heads:
+  - [your_layer_index, your_head_index]
+
+# Labeled checkpoints: keys are used as row labels in the output CSV.
+checkpoints:
+  before_jump: /path/to/your_model/checkpoints/checkpoint-10000
+  jump_peak: /path/to/your_model/checkpoints/checkpoint-15000
+  after_jump: /path/to/your_model/checkpoints/checkpoint-25000
+  final: /path/to/your_model/checkpoints/checkpoint-100000
+
+# ── Optional (defaults shown = paper run) ─────────────────────────────────────
+src_col: random
+tgt_col: canonical
+seed: 42
+batch_size: 2048
+max_length: 402
+n_phases: 5
+# true reproduces the head set ablated for Table 4 / S5 "all chiral heads" in arXiv v1;
+# false ablates exactly chiral_heads (see the docstring of 07_head_ablation.py).
+legacy_all_heads_union: false

@@ -1,0 +1,13 @@
+# Config for 00_probe_eval_set.py
+# Usage: python analysis/scripts/compute/00_probe_eval_set.py --config analysis/configs/individual/00_probe_eval_set.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+# CSV with a molecule-id first column and columns canonical / random, made of n_buckets
+# equal consecutive length buckets (paper: sampled_100k.csv, 5 x 20,000 rows).
+source_csv: /path/to/sampled_100k.csv
+output_dir: /path/to/probe_eval_set
+
+# ── Optional (paper values shown) ─────────────────────────────────────────────
+seed: 42
+max_per_class: 5000
+n_buckets: 5

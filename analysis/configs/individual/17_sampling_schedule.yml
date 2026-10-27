@@ -1,0 +1,14 @@
+# Config for 17_sampling_schedule.py
+# Usage: python analysis/scripts/visualize/17_sampling_schedule.py --config analysis/configs/individual/17_sampling_schedule.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+output_dir: /path/to/figures/sampling_schedule
+
+# ── Optional (paper Fig S1 values shown) ──────────────────────────────────────
+start_probs: [0.4, 0.4, 0.1, 0.05, 0.05]
+end_probs: [0.2, 0.2, 0.2, 0.2, 0.2]
+delay_factors: [0.5, 0.8, 1.0]
+steepness_values: [5.0, 12.0, 15.0]
+resolution: 100
+# The paper figure is unnormalized; the training sampler renormalizes (true).
+normalize: false

@@ -1,0 +1,96 @@
+ID,name,smiles
+1,Penicillin G,CC1([C@@H](N2[C@H](S1)[C@@H](C2=O)NC(=O)CC3=CC=CC=C3)C(=O)O)C
+1,Penicillin V,CC1([C@@H](N2[C@H](S1)[C@@H](C2=O)NC(=O)COC3=CC=CC=C3)C(=O)O)C
+1,Ampicillin,CC1([C@@H](N2[C@H](S1)[C@@H](C2=O)NC(=O)[C@@H](C3=CC=CC=C3)N)C(=O)O)C
+1,Piperacillin,CCN1CCN(C(=O)C1=O)C(=O)N[C@H](C2=CC=CC=C2)C(=O)N[C@H]3[C@@H]4N(C3=O)[C@H](C(S4)(C)C)C(=O)O
+2,Cephalosporin,C=C1CS[C@@H](N=C1C(=O)O)[C@@H](C(=O)O)NC(=O)CCCC[C@H](C(=O)O)N
+2,Cefotetan,CN1C(=NN=N1)SCC2=C(N3[C@@H]([C@@](C3=O)(NC(=O)C4SC(=C(C(=O)N)C(=O)O)S4)OC)SC2)C(=O)O
+2,Ceftriaxone,CN1C(=NC(=O)C(=O)N1)SCC2=C(N3[C@@H]([C@@H](C3=O)NC(=O)/C(=N\OC)/C4=CSC(=N4)N)SC2)C(=O)O
+2,Cefepime,C[N+]1(CCCC1)CC2=C(N3[C@@H]([C@@H](C3=O)NC(=O)/C(=N\OC)/C4=CSC(=N4)N)SC2)C(=O)[O-]
+3,Tetracycline,C[C@@]1([C@H]2C[C@H]3[C@@H](C(=O)C(=C([C@]3(C(=O)C2=C(C4=C1C=CC=C4O)O)O)O)C(=O)N)N(C)C)O
+3,Doxycycline,C[C@@H]1[C@H]2[C@@H]([C@H]3[C@@H](C(=O)C(=C([C@]3(C(=O)C2=C(C4=C1C=CC=C4O)O)O)O)C(=O)N)N(C)C)O
+4,Vancomycin,C[C@H]1[C@H]([C@@](C[C@@H](O1)O[C@@H]2[C@H]([C@@H]([C@H](O[C@H]2OC3=C4C=C5C=C3OC6=C(C=C(C=C6)[C@H]([C@H](C(=O)N[C@H](C(=O)N[C@H]5C(=O)N[C@@H]7C8=CC(=C(C=C8)O)C9=C(C=C(C=C9O)O)[C@H](NC(=O)[C@H]([C@@H](C1=CC(=C(O4)C=C1)Cl)O)NC7=O)C(=O)O)CC(=O)N)NC(=O)[C@@H](CC(C)C)NC)O)Cl)CO)O)O)(C)N)O
+4,Daptomycin,CCCCCCCCCC(=O)N[C@@H](CC1=CNC2=CC=CC=C21)C(=O)N[C@H](CC(=O)N)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H]3[C@H](OC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@H](NC(=O)CNC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)CNC3=O)CCCN)CC(=O)O)C)CC(=O)O)CO)[C@H](C)CC(=O)O)CC(=O)C4=CC=CC=C4N)C
+5,Uracil,C1=CNC(=O)NC1=O
+5,Fluorouracil,C1=C(C(=O)NC(=O)N1)F
+5,Capecitabine,CCCCCOC(=O)NC1=NC(=O)N(C=C1F)[C@H]2[C@@H]([C@@H]([C@H](O2)C)O)O
+6,Deoxycytidine,C1[C@@H]([C@H](O[C@H]1N2C=CC(=NC2=O)N)CO)O
+6,Cytarabine,C1=CN(C(=O)N=C1N)[C@H]2[C@H]([C@@H]([C@H](O2)CO)O)O
+7,Folic Acid,C1=CC(=CC=C1C(=O)N[C@@H](CCC(=O)O)C(=O)O)NCC2=CN=C3C(=N2)C(=O)NC(=N3)N
+7,Methotrexate,CN(CC1=CN=C2C(=N1)C(=NC(=N2)N)N)C3=CC=C(C=C3)C(=O)N[C@@H](CCC(=O)O)C(=O)O
+7,Pemetrexed,C1=CC(=CC=C1CCC2=CNC3=C2C(=O)NC(=N3)N)C(=O)N[C@@H](CCC(=O)O)C(=O)O
+8,Taxane,C[C@@H]1CCC[C@@]2([C@@H]1C[C@@H]3CC[C@H]([C@@H](C3(C)C)CC2)C)C
+8,Paclitaxel,CC1=C2[C@H](C(=O)[C@@]3([C@H](C[C@@H]4[C@]([C@H]3[C@@H]([C@@](C2(C)C)(C[C@@H]1OC(=O)[C@@H]([C@H](C5=CC=CC=C5)NC(=O)C6=CC=CC=C6)O)O)OC(=O)C7=CC=CC=C7)(CO4)OC(=O)C)O)C)OC(=O)C
+8,Docetaxel,CC1=C2[C@H](C(=O)[C@@]3([C@H](C[C@@H]4[C@]([C@H]3[C@@H]([C@@](C2(C)C)(C[C@@H]1OC(=O)[C@@H]([C@H](C5=CC=CC=C5)NC(=O)OC(C)(C)C)O)O)OC(=O)C6=CC=CC=C6)(CO4)OC(=O)C)O)C)O
+9,Cisplatin,N.N.Cl[Pt]Cl
+9,Paraplatin,C1CC(C1)(C(=O)O)C(=O)O.[NH2-].[NH2-].[Pt+2]
+9,Oxaliplatin,C1CC[C@H]([C@@H](C1)[NH-])[NH-].C(=O)(C(=O)O)O.[Pt+2]
+10,Cyclosporin,CC[C@H]1C(=O)N(CC(=O)N([C@H](C(=O)N[C@H](C(=O)N([C@H](C(=O)N[C@H](C(=O)N[C@@H](C(=O)N([C@H](C(=O)N([C@H](C(=O)N([C@H](C(=O)N([C@H](C(=O)N1)[C@@H]([C@H](C)C/C=C/C)O)C)C(C)C)C)CC(C)C)C)CC(C)C)C)C)C)CC(C)C)C)C(C)C)CC(C)C)C)C
+10,Tacrolimus,C[C@@H]1C[C@@H]([C@@H]2[C@H](C[C@H]([C@@](O2)(C(=O)C(=O)N3CCCC[C@H]3C(=O)O[C@@H]([C@@H]([C@H](CC(=O)[C@@H](/C=C(/C1)\C)CC=C)O)C)/C(=C/[C@@H]4CC[C@H]([C@@H](C4)OC)O)/C)O)C)OC)OC
+10,Rapamycin,C[C@@H]1CC[C@H]2C[C@@H](/C(=C/C=C/C=C/[C@H](C[C@H](C(=O)[C@@H]([C@@H](/C(=C/[C@H](C(=O)C[C@H](OC(=O)[C@@H]3CCCCN3C(=O)C(=O)[C@@]1(O2)O)[C@H](C)C[C@@H]4CC[C@H]([C@@H](C4)OC)O)C)/C)O)OC)C)C)/C)OC
+11,Benzodiazepines,C1=CC=C2C(=C1)C=CC=NN2
+11,Diazepam,CN1C(=O)CN=C(C2=C1C=CC(=C2)Cl)C3=CC=CC=C3
+11,Lorazepam,C1=CC=C(C(=C1)C2=NC(C(=O)NC3=C2C=C(C=C3)Cl)O)Cl
+12,Barbituric Acid,C1C(=O)NC(=O)NC1=O
+12,Thiopental,CCCC(C)C1(C(=O)NC(=S)NC1=O)CC
+12,Phenobarbital,CCC1(C(=O)NC(=O)NC1=O)C2=CC=CC=C2
+13,Imipramine,CN(C)CCCN1C2=CC=CC=C2CCC3=CC=CC=C31
+13,Amitriptyline,CN(C)CCC=C1C2=CC=CC=C2CCC3=CC=CC=C31
+13,Maprotiline,CNCCCC12CCC(C3=CC=CC=C31)C4=CC=CC=C24
+14,Dopamine,C1=CC(=C(C=C1CCN)O)O
+14,Levodopa,C1=CC(=C(C=C1C[C@@H](C(=O)O)N)O)O
+14,Carbidopa,C[C@](CC1=CC(=C(C=C1)O)O)(C(=O)O)NN
+15,Tubocurarine,CN1CCC2=CC(=C3C=C2[C@@H]1CC4=CC=C(C=C4)OC5=C6[C@@H](CC7=CC(=C(C=C7)O)O3)[N+](CCC6=CC(=C5O)OC)(C)C)OC
+15,Pancuronium,CC(=O)O[C@H]1C[C@@H]2CC[C@@H]3[C@@H]([C@]2(C[C@@H]1[N+]4(CCCCC4)C)C)CC[C@]5([C@H]3C[C@@H]([C@@H]5OC(=O)C)[N+]6(CCCCC6)C)C
+15,Vecuronium,CC(=O)O[C@H]1C[C@@H]2CC[C@@H]3[C@@H]([C@]2(C[C@@H]1N4CCCCC4)C)CC[C@]5([C@H]3C[C@@H]([C@@H]5OC(=O)C)[N+]6(CCCCC6)C)C
+16,Morphine,CN1CC[C@]23[C@@H]4[C@H]1CC5=C2C(=C(C=C5)O)O[C@H]3[C@H](C=C4)O
+16,Codeine,CN1CC[C@]23[C@@H]4[C@H]1CC5=C2C(=C(C=C5)OC)O[C@H]3[C@H](C=C4)O
+16,Oxycodone,CN1CC[C@]23[C@@H]4C(=O)CC[C@]2([C@H]1CC5=C3C(=C(C=C5)OC)O4)O
+17,Fentanyl,CCC(=O)N(C1CCN(CC1)CCC2=CC=CC=C2)C3=CC=CC=C3
+17,Sufentanyl,CCC(=O)N(C1=CC=CC=C1)C2(CCN(CC2)CCC3=CC=CS3)COC
+18,Valsartan,CCCCC(=O)N(CC1=CC=C(C=C1)C2=CC=CC=C2C3=NNN=N3)[C@@H](C(C)C)C(=O)O
+18,Candesartan,CCOC1=NC2=CC=CC(=C2N1CC3=CC=C(C=C3)C4=CC=CC=C4C5=NNN=N5)C(=O)O
+18,Losartan,CCCCC1=NC(=C(N1CC2=CC=C(C=C2)C3=CC=CC=C3C4=NNN=N4)CO)Cl
+19,Digoxin,C[C@@H]1[C@H]([C@H](C[C@@H](O1)O[C@@H]2[C@H](O[C@H](C[C@@H]2O)O[C@@H]3[C@H](O[C@H](C[C@@H]3O)O[C@H]4CC[C@]5([C@@H](C4)CC[C@@H]6[C@@H]5C[C@H]([C@]7([C@@]6(CC[C@@H]7C8=CC(=O)OC8)O)C)O)C)C)C)O)O
+19,Digitoxin,C[C@@H]1[C@H]([C@H](C[C@@H](O1)O[C@@H]2[C@H](O[C@H](C[C@@H]2O)O[C@@H]3[C@H](O[C@H](C[C@@H]3O)O[C@H]4CC[C@]5([C@@H](C4)CC[C@@H]6[C@@H]5CC[C@]7([C@@]6(CC[C@@H]7C8=CC(=O)OC8)O)C)C)C)C)O)O
+20,Serotonin,C1=CC2=C(C=C1O)C(=CN2)CCN
+20,Ondansetron,CC1=NC=CN1CC2CCC3=C(C2=O)C4=CC=CC=C4N3C
+20,Granisetron,CN1[C@@H]2CCC[C@H]1CC(C2)NC(=O)C3=NN(C4=CC=CC=C43)C
+20,Palonosetron,C1C[C@@H]2CN(C(=O)C3=CC=CC(=C23)C1)[C@@H]4CN5CCC4CC5
+21,Leu enkephalin,CC(C)C[C@@H](C(=O)O)NC(=O)[C@H](CC1=CC=CC=C1)NC(=O)CNC(=O)CNC(=O)[C@H](CC2=CC=C(C=C2)O)N
+21,Met enkephalin,CSCC[C@@H](C(=O)O)NC(=O)[C@H](CC1=CC=CC=C1)NC(=O)CNC(=O)CNC(=O)[C@H](CC2=CC=C(C=C2)O)N
+22,GHRH,CC[C@H](C)[C@@H](C(=O)N[C@@H](CC1=CC=CC=C1)C(=O)N[C@@H]([C@@H](C)O)C(=O)N[C@@H](CC(=O)N)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC2=CC=C(C=C2)O)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](C(C)C)C(=O)N[C@@H](CC(C)C)C(=O)NCC(=O)N[C@@H](CCC(=O)N)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CO)C(=O)N[C@@H](C)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCC(=O)N)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H]([C@@H](C)CC)C(=O)N[C@@H](CCSC)C(=O)N[C@@H](CO)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N)NC(=O)[C@H](C)NC(=O)[C@H](CC(=O)O)NC(=O)[C@H](C)NC(=O)[C@H](CC3=CC=C(C=C3)O)N.CC(=O)O.CC(=O)O.CC(=O)O
+22,Glucagon,C[C@H]([C@@H](C(=O)N[C@@H](CC1=CC=CC=C1)C(=O)N[C@@H]([C@@H](C)O)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H](CC2=CC=C(C=C2)O)C(=O)N[C@@H](CO)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC3=CC=C(C=C3)O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H](CO)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](C)C(=O)N[C@@H](CCC(=O)N)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H](CC4=CC=CC=C4)C(=O)N[C@@H](C(C)C)C(=O)N[C@@H](CCC(=O)N)C(=O)N[C@@H](CC5=CNC6=CC=CC=C65)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCSC)C(=O)N[C@@H](CC(=O)N)C(=O)N[C@@H]([C@@H](C)O)C(=O)O)NC(=O)CNC(=O)[C@H](CCC(=O)N)NC(=O)[C@H](CO)NC(=O)[C@H](CC7=CN=CN7)N)O
+22,Secretin,C[C@H]([C@@H](C(=O)N[C@@H](CC1=CC=CC=C1)C(=O)N[C@@H]([C@@H](C)O)C(=O)N[C@@H](CO)C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CO)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H](CO)C(=O)N[C@@H](C)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCC(=O)N)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCC(=O)N)C(=O)NCC(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C(C)C)C(=O)N)NC(=O)CNC(=O)[C@H](CC(=O)O)NC(=O)[C@H](CO)NC(=O)[C@H](CC2=CN=CN2)N)O
+23,Vasopressin,C1CC(N(C1)C(=O)C2CSSCC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)N2)CC(=O)N)CCC(=O)N)CC3=CC=CC=C3)CC4=CC=C(C=C4)O)N)C(=O)NC(CCCCN)C(=O)NCC(=O)N.C1CC(N(C1)C(=O)C2CSSCC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)N2)CC(=O)N)CCC(=O)N)CC3=CC=CC=C3)CC4=CC=C(C=C4)O)N)C(=O)NC(CCCN=C(N)N)C(=O)NCC(=O)N
+23,Oxytocin,CC[C@H](C)[C@H]1C(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@@H](CSSC[C@@H](C(=O)N[C@H](C(=O)N1)CC2=CC=C(C=C2)O)N)C(=O)N3CCC[C@H]3C(=O)N[C@@H](CC(C)C)C(=O)NCC(=O)N)CC(=O)N)CCC(=O)N
+24,Substance P,CC(C)C[C@@H](C(=O)N[C@@H](CCSC)C(=O)N)NC(=O)CNC(=O)[C@H](CC1=CC=CC=C1)NC(=O)[C@H](CC2=CC=CC=C2)NC(=O)[C@H](CCC(=O)N)NC(=O)[C@H](CCC(=O)N)NC(=O)[C@@H]3CCCN3C(=O)[C@H](CCCCN)NC(=O)[C@@H]4CCCN4C(=O)[C@H](CCCN=C(N)N)N
+24,Kassinin,CC(C)CC(C(=O)NC(CCSC)C(=O)N)NC(=O)CNC(=O)C(C(C)C)NC(=O)C(CC1=CC=CC=C1)NC(=O)C(CCC(=O)N)NC(=O)C(CC(=O)O)NC(=O)C(CO)NC(=O)C(CCCCN)NC(=O)C2CCCN2C(=O)C(C(C)C)NC(=O)C(CC(=O)O)N
+24,Eledoisin,CC[C@H](C)[C@@H](C(=O)NCC(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCSC)C(=O)N)NC(=O)[C@H](CC1=CC=CC=C1)NC(=O)[C@H](C)NC(=O)[C@H](CC(=O)O)NC(=O)[C@H](CCCCN)NC(=O)[C@H](CO)NC(=O)[C@@H]2CCCN2C(=O)[C@@H]3CCC(=O)N3
+25,ATP,C1=NC(=C2C(=N1)N(C=N2)[C@H]3[C@@H]([C@@H]([C@H](O3)COP(=O)(O)OP(=O)(O)OP(=O)(O)O)O)O)N
+25,ADP,C1=NC(=C2C(=N1)N(C=N2)[C@H]3[C@@H]([C@@H]([C@H](O3)COP(=O)(O)OP(=O)(O)O)O)O)N
+25,AMP,C1=NC(=C2C(=N1)N(C=N2)[C@H]3[C@@H]([C@@H]([C@H](O3)COP(=O)(O)O)O)O)N
+25,GTP,C1=NC2=C(N1[C@H]3[C@@H]([C@@H]([C@H](O3)COP(=O)(O)OP(=O)(O)OP(=O)(O)O)O)O)N=C(NC2=O)N
+25,GDP,C1=NC2=C(N1[C@H]3[C@@H]([C@@H]([C@H](O3)COP(=O)(O)OP(=O)(O)O)O)O)N=C(NC2=O)N
+25,GMP,C1=NC2=C(N1[C@H]3[C@@H]([C@@H]([C@H](O3)COP(=O)(O)O)O)O)N=C(NC2=O)N
+26,D-Glucose,C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O
+26,L-Glucose,C([C@@H]([C@@H]([C@H]([C@@H](C=O)O)O)O)O)O
+26,DL-Glucose,C([C@H]([C@H]([C@@H]([C@H](C=O)O)O)O)O)O
+26,Maltose,C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O[C@@H]2[C@H](OC([C@@H]([C@H]2O)O)O)CO)O)O)O)O
+26,Sucrose,C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O[C@]2([C@H]([C@@H]([C@H](O2)CO)O)O)CO)O)O)O)O
+27,Adenine,C1=NC2=NC=NC(=C2N1)N
+27,Thymine,CC1=CNC(=O)NC1=O
+27,Guanine,C1=NC2=C(N1)C(=O)NC(=N2)N
+27,Cytosine,C1=C(NC(=O)N=C1)N
+27,Nucleotide1,C1[C@@H]2[C@H]([C@H]([C@@H](O2)N3C=NC4=C(N=CN=C43)N)OP(=O)(OC[C@@H]5[C@H]([C@H]([C@@H](O5)N6C=NC7=C(N=CN=C76)N)O)OP(=S)(O1)O)S)O
+27,Nucleotide2,CC1=CN(C(=O)N=C1N)C2C3C(C(O2)(CO3)CO)OP(=O)(O)OCC4C(C(C(O4)N5C=CC(=O)NC5=O)OC)OP(=O)(O)OCC67COC(C6OP(=O)(O)OCC8C(C(C(O8)N9C=CC(=NC9=O)N)OC)OP(=O)(O)OCC12COC(C1OP(=O)(O)OCC1C(C(C(O1)N1C=NC3=C(N=CN=C31)N)OC)OP(=O)(O)OCC13COC(C1OP(=O)(O)OCC1C(C(C(O1)N1C=NC4=C1N=C(NC4=O)N)OC)OP(=O)(O)OCC14COC(C1OP(=O)(O)OCC1C(C(C(O1)N1C=CC(=O)NC1=O)OC)OP(=O)(O)OCC[C@@H](C(=O)N)NC(=O)C1=CC5=C(C=C1)C(=O)OC51C5=C(C=C(C=C5)O)OC5=C1C=CC(=C5)O)C(O4)N1C=C(C(=NC1=O)N)C)C(O3)N1C=NC3=C1N=C(NC3=O)N)C(O2)N1C=C(C(=NC1=O)N)C)C(O7)N1C=C(C(=NC1=O)N)C
+27,Nucleotide3,CC1=CN(C(=O)N=C1N)C2C3C(C(O2)(CO3)CO)OP(=O)(O)OCC4C(C(C(O4)N5C=CC(=O)NC5=O)OC)OP(=O)(O)OCC67COC(C6OP(=O)(O)OCC8C(C(C(O8)N9C=CC(=NC9=O)N)OC)OP(=O)(O)OCC12COC(C1OP(=O)(O)OCC1C(C(C(O1)N1C=NC3=C(N=CN=C31)N)OC)OP(=O)(O)OCC1C(C(C(O1)N1C=NC3=C1N=C(NC3=O)N)OC)OP(=O)(O)OCC1C(C(C(O1)N1C=NC3=C1N=C(NC3=O)N)OC)OP(=O)(O)OCC[C@@H](C(=O)N)NC(=O)C1=CC3=C(C=C1)C(=O)OC31C3=C(C=C(C=C3)O)OC3=C1C=CC(=C3)O)C(O2)N1C=C(C(=NC1=O)N)C)C(O7)N1C=C(C(=NC1=O)N)C
+28,Palmitic Acid,CCCCCCCCCCCCCCCC(=O)O
+28,Oleic Acid,CCCCCCCC/C=C\CCCCCCCC(=O)O
+28,Glycerin,C(C(CO)O)O
+28,Tristearin,CCCCCCCCCCCCCCCCCC(=O)OCC(COC(=O)CCCCCCCCCCCCCCCCC)OC(=O)CCCCCCCCCCCCCCCCC
+28,Tripalmitin,CCCCCCCCCCCCCCCC(=O)OCC(COC(=O)CCCCCCCCCCCCCCC)OC(=O)CCCCCCCCCCCCCCC
+28,PoOS,CCCCCCCCCCCCCCCCCC(=O)OCC(COC(=O)CCCCCCCCCCCCCCC)OC(=O)CCCCCCC/C=C\CCCCCCCC
+29,Squalene,CC(=CCC/C(=C/CC/C(=C/CC/C=C(/CC/C=C(/CCC=C(C)C)\C)\C)/C)/C)C
+29,Lanosterol,C[C@H](CCC=C(C)C)[C@H]1CC[C@@]2([C@@]1(CCC3=C2CC[C@@H]4[C@@]3(CC[C@@H](C4(C)C)O)C)C)C
+29,Cholesterol,C[C@H](CCCC(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3[C@H]2CC=C4[C@@]3(CC[C@@H](C4)O)C)C

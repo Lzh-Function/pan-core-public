@@ -1,0 +1,24 @@
+# Config for 02_detailed_decode.py
+# Usage: python analysis/scripts/compute/02_detailed_decode.py --config analysis/configs/individual/02_detailed_decode.yml
+#
+# Paper Table 2 "train" rows: eval_data = sampled_100k.csv (5 x 20,000 training pairs),
+# checkpoint_dir = the 5,000-step series, checkpoint_steps = [700000].
+
+# ── Required ──────────────────────────────────────────────────────────────────
+model_name: your_model
+checkpoint_dir: /path/to/your_model/checkpoints
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/eval.csv
+output_dir: /path/to/results/decode
+
+# ── Optional (defaults shown = paper run) ─────────────────────────────────────
+src_col: random
+tgt_col: canonical
+seed: 42
+batch_size: 3584
+max_length: 402      # max generation length in tokens
+use_bf16: true
+n_phases: 5
+
+# List specific training steps to decode; null = use all checkpoints found in checkpoint_dir.
+checkpoint_steps: ~

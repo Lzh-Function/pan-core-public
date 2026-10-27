@@ -1,0 +1,23 @@
+# Config for 14_latent_trajectory.py
+# Usage: python analysis/scripts/visualize/14_latent_trajectory.py --config analysis/configs/individual/14_latent_trajectory.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+# input_dir contains {model_name}/ trajectory files from analysis 04.
+input_dir: /path/to/results/latent_trajectory
+output_dir: /path/to/figures/latent_trajectory
+# Directory containing {model_name}/logits_metrics_trajectory.csv from analysis 03.
+jump_logits_dir: /path/to/results/jumpup_metrics
+
+# ── Optional ──────────────────────────────────────────────────────────────────
+# Omit models to auto-discover model subdirectories.
+models:
+  - your_model
+
+jump_threshold_ratio: 0.15
+jump_ignore_initial_n: 10
+show_jump: true            # Fig S8 (5,000-step series): false
+xlim: ~                    # Fig S8: [0, 80000]
+ylim:                      # Fig 7 values shown; Fig S8: cosine [0.95, 1.0], cka [0.90, 1.0]
+  cosine: [0.999, 1.0]
+  cka: [0.9975, 1.0]
+figsize: [12, 8]

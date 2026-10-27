@@ -1,0 +1,157 @@
+# Example configuration with the curriculum and optimizer settings of
+# "From Syntax to Semantics" (arXiv:2605.09949); the model block is the
+# pancore-xattn-adalnzero architecture. Fill in the data paths before use.
+# Blank values are read as null.
+
+# ========== System & Logging Config ==========
+system:
+  environment: normal # "normal" or "hpc" ("hpc" reads every data file from $LOCALDIR/<basename of path>)
+  seed: 42
+  num_workers: 16 # DataLoader workers per process
+  persistent_workers: False # bool (keep workers alive across epochs instead of re-forking them)
+  prefetch_factor: # batches queued per worker (blank = torch default, 2)
+  use_bf16: True # bool (whether use BF16 amp)
+
+logging:
+  wandb:
+    enabled: False # bool (whether use wandb or not)
+    api_key_path: /path/to/wandb_key # file containing the wandb API key
+    project_name: pan-core
+    exp_name: sample_run
+    exp_id: sample_run
+  tqdm:
+    enabled: True # bool (whether show progress bars)
+  log_interval_steps: 100
+
+# ========== Model Architecture Config ==========
+model:
+  use_vae: False # bool (whether use VAE or not)
+
+  common:
+    vocab_size: 185 # CAN BE OVERWRITTEN BY TOKENIZER, 152 valid tokens + 3 special tokens + 30 unknown tokens (for possibility of future updates)
+    dropout: 0.2
+    embedding_dim: 512 # equal to hidden dim and latent dim
+    tanh_latent: False # bool (whether to apply tanh to latent variables)
+    latent_noising: False # bool (whether to add noise to latent variables during training)
+
+  loss:
+    # KL weight, in nats of KL per token of reconstruction (only used when use_vae).
+    # The KL is divided by the molecule's token count, so this value means the same
+    # thing at every sequence length. 0.01 is far too small under this definition;
+    # 0.1 is a starting point to tune against eval_klloss.
+    beta: 0.1
+    # Optimizer steps over which the KL weight rises linearly from 0 to beta.
+    # 0 applies the full weight from step 1, which lets a strong autoregressive
+    # decoder learn to ignore the latent before it ever learns to use it.
+    beta_warmup_steps: 0
+
+  Transformer:
+    n_positions: 2048 # equal to max length
+    n_layer: 8
+    n_head: 8
+    bias: True # bool (whether use bias in linear layers)
+    weight_sharing: False # bool (whether share weights between embedding and output projection in decoder)
+    layer_norm_epsilon: 1.0e-5
+    gpt2style: False # bool (whether use GPT2 style architecture, SwiGLU->GPT2MLP, nn.Linear->Conv1D)
+
+    rope:
+      encoder: True # bool (whether use rope in encoder)
+      decoder: True # bool (whether use rope in decoder)
+      base_freq: 10000
+
+    latent:
+      pooling_mode: MHA # MHA or concat (cls-max-mean concatenation)
+      cross_attn: L-T # none (blank) or L-T (latent-target) or S-T (source-target)
+      latent_conditioning: adaln-zero # none (blank) or add_once or adaln or adaln-zero
+
+# ========== Training Config ==========
+training:
+  init_model_path: # path to pre-trained model (blank if none)
+  save_only_model: False # bool (True: checkpoints without optimizer state; training cannot resume from them)
+
+  strategy:
+    type: dynamic # "normal" or "phased" or "dynamic"
+    num_epochs: 70 # total epochs; for "dynamic", one epoch = max_steps / num_epochs steps (not used if phased)
+    normal:
+      early_stopping:
+        enabled: True # bool
+        patience: 10000 # int
+        delta: 0.0 # float
+    phased:
+      phases: 5
+      phase_epochs: 10 # number of epochs per phase(int)
+      replay_ratio: 0.0 # float between 0 and 1
+      early_stopping: # early stopping per phase
+        enabled: True # bool
+        patience: 10000 # int
+        delta: 0.0 # float
+    dynamic:
+      phases: 5 # number of length buckets (= number of train_data files)
+      max_steps: 700000 # required, positive integer
+      start_sampling_probabilities: [0.4, 0.4, 0.1, 0.05, 0.05]
+      end_sampling_probabilities: [0.2, 0.2, 0.2, 0.2, 0.2]
+      sampling_update_last_epoch: 70 # last epoch to update sampling probabilities
+      sampling_interpolation_type: "sigmoid" # "linear" or "sigmoid"
+      sigmoid:
+        steepness: 12.0 # float
+        delay_factor: 0.8
+      early_stopping:
+        enabled: False # bool
+
+  optimizer:
+    type: schedulefree # "schedulefree" or "AdamW"
+    max_lr: 3.0e-4
+    weight_decay: 0.0
+    schedulefree:
+      r: 0.5 # parameter mean weight (step**r)
+    AdamW:
+      cosinedecay:
+        warmup_steps: 10000 # linear warmup, followed by the default Hugging Face (linear) decay
+
+  zclip:
+    enabled: True # bool (adaptive z-score gradient clipping; replaces fixed-norm clipping)
+    alpha: 0.97
+    z_thresh: 2.5
+    warmup_steps: 25
+    clip_factor: 1.0
+
+  checkpoint:
+    step: 5000 # save a checkpoint every N steps
+    limit: # maximum number of checkpoints to keep (blank keeps all)
+
+  validation:
+    # teacher-forced validation loss during training
+    enabled: True # bool
+    interval_steps: 100
+    batch_size: 1024 # per device
+
+  evaluation:
+    # autoregressive decoding with --do_eval_gen (after training)
+    batch_size: 1024
+    maxlen: 500 # maximum output length
+
+  data:
+    mode: "memmap" # "on_the_fly" (CSV / Parquet) or "memmap" (NPY from split_and_tokenize)
+    csv_column_name: # used if mode is "on_the_fly"
+      source: "random"
+      target: "canonical"
+    # per-device batch size and gradient accumulation; a list gives one value per phase / bucket
+    batch_size: [1024, 1024, 512, 512, 256]
+    accumulate_steps: [1, 1, 2, 2, 4]
+    # vocabulary file, one token per line; relative paths resolve from the
+    # directory the command is run in (the repository root, in the README)
+    token_file_path: sample/data/normal_tokens.txt
+    train_data:
+      # list of training data files (num of files must equal to phase if you use curriculum learning)
+      - path: # path to training data file, csv or npy(memmap file which is already tokenized and encoded)
+        num_data: # number of data samples (required if mode is "memmap")
+        dim_data: # sequence length of the memmap rows (required if mode is "memmap")
+    valid_data:
+      path: # path to validation data file, csv or npy(memmap file which is already tokenized and encoded)
+      num_data: # number of data samples (required if mode is "memmap")
+      dim_data: # sequence length of the memmap rows (required if mode is "memmap")
+    eval_data:
+      # dataset used for evaluation (after training)
+      path: # path to evaluation data file, csv or npy(memmap file which is already tokenized and encoded, or latent array (shape[B, E]) for generation)
+      num_data: # number of data samples (required if mode is "memmap")
+      dim_data: # sequence length of the memmap rows (required if mode is "memmap")

@@ -1,0 +1,24 @@
+# Config for 13_residual_stream.py
+# Usage: python analysis/scripts/visualize/13_residual_stream.py --config analysis/configs/individual/13_residual_stream.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+# input_dir contains {model_name}/ trajectory files from analysis 05 (L2 norm).
+input_dir: /path/to/results/residual_stream
+output_dir: /path/to/figures/residual_stream
+# Directory containing {model_name}/ outputs of analysis 03 (jump interval and the
+# checkpoint-to-checkpoint cosine cos_*_trajectory.csv of Fig 6c,d / S6 / S7c,d).
+jump_logits_dir: /path/to/results/jumpup_metrics
+
+# ── Optional ──────────────────────────────────────────────────────────────────
+# Omit models to auto-discover model subdirectories.
+models:
+  - your_model
+
+jump_threshold_ratio: 0.15
+jump_ignore_initial_n: 10
+show_jump: true          # Fig S6 (5,000-step series): false
+xlim: ~                  # Fig S6: [0, 80000]
+cos_ylim: ~              # e.g. Fig 6c,d pancore-addonce: [0.99, 1.0]; Fig S6: [0.6, 1.0]
+l2_ylim: ~
+figsize: [18, 10]        # supplementary heatmaps
+figsize_line: [10, 6]

@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use PanCORE, please cite it as below. A paper describing PanCORE is in preparation; this entry will point to it once it is published."
+type: software
+title: "PanCORE: Pan-Chemical Omniscale Representation Engine"
+abstract: "A Transformer-based seq2seq framework that maps chemical structures (SMILES) into a continuous latent space, with length-bucketed curriculum training and multi-GPU support."
+authors:
+  - family-names: Li
+    given-names: Zehao
+  - family-names: Mizuno
+    given-names: Tadahaya
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/mizuno-group/pan-core"
+keywords:
+  - cheminformatics
+  - SMILES
+  - transformer
+  - molecular representation
+  - latent space
+references:
+  - type: article
+    title: "From Syntax to Semantics: Unveiling the Emergence of Chirality in SMILES Translation Models"
+    authors:
+      - family-names: Li
+        given-names: Zehao
+      - family-names: Yoshikai
+        given-names: Yasuhiro
+      - family-names: Nemoto
+        given-names: Shumpei
+      - family-names: Kusuhara
+        given-names: Hiroyuki
+      - family-names: Mizuno
+        given-names: Tadahaya
+    year: 2026
+    journal: "arXiv preprint arXiv:2605.09949"
+    doi: 10.48550/arXiv.2605.09949

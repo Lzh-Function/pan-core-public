@@ -1,0 +1,25 @@
+# Config for 11_accuracy.py
+# Usage: python analysis/scripts/visualize/11_accuracy.py --config analysis/configs/individual/11_accuracy.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+# input_dir contains accuracy_{model_name}.csv and token_accuracy_{model_name}_phase{p}.csv
+# files from analysis 01.
+input_dir: /path/to/results/accuracy
+output_dir: /path/to/figures/accuracy
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/valid_10k.csv     # the eval CSV given to analysis 01 (token counts)
+
+# ── Optional ──────────────────────────────────────────────────────────────────
+# Omit models to auto-discover every accuracy_*.csv file.
+models:
+  - your_model
+
+tgt_col: canonical
+n_phases: 5
+token_phases: [1, 2]     # buckets with a token-accuracy figure (paper Fig 3: ZINC, PubChem ~100)
+teacher_forced_token_accuracy: true   # also plot token_accuracy_teacher_forced_* (needs 01 with the same flag)
+bucket_labels: ["ZINC (~100)", "PC (~100)", "PC (101~200)", "PC (201~300)", "PC (301~400)"]
+
+# trainer_state.json of the final checkpoint per model; enables the Fig 2 loss panel.
+trainer_states:
+  your_model: /path/to/your_model/checkpoints/checkpoint-700000/trainer_state.json

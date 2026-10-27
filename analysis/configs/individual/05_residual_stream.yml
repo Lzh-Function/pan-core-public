@@ -1,0 +1,23 @@
+# Config for 05_residual_stream.py
+# Usage: python analysis/scripts/compute/05_residual_stream.py --config analysis/configs/individual/05_residual_stream.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+model_name: your_model
+checkpoint_dir: /path/to/your_model/checkpoints
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/sampled_valid_1k_seed_42.csv
+output_dir: /path/to/results/residual_stream
+
+# ── Optional (paper settings shown) ───────────────────────────────────────────
+src_col: random
+tgt_col: canonical
+seed: 42
+batch_size: 128
+max_len: 402
+
+# Analyse only one 1-based block of max_phase equal blocks (paper: phase 1 of 5 = ZINC20).
+phase: 1
+max_phase: 5
+
+# Subset of training steps; null = all checkpoints.
+checkpoint_steps: ~

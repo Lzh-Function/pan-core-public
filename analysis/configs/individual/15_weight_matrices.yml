@@ -1,0 +1,19 @@
+# Config for 15_weight_matrices.py
+# Usage: python analysis/scripts/visualize/15_weight_matrices.py --config analysis/configs/individual/15_weight_matrices.yml
+# Supplementary analysis; not used in the paper.
+
+# ── Required ──────────────────────────────────────────────────────────────────
+# input_dir contains weight_matrix_{model_name}.json files from analysis 08.
+input_dir: /path/to/results/weight_matrix
+output_dir: /path/to/figures/weight_matrix
+
+# ── Optional ──────────────────────────────────────────────────────────────────
+# Omit models to auto-discover every weight_matrix_*.json file.
+models:
+  - your_model
+
+# Omit to disable jump-interval shading.
+jump_logits_dir: /path/to/results/jumpup_metrics
+jump_threshold_ratio: 0.15
+jump_ignore_initial_n: 10
+figsize: [12, 5]

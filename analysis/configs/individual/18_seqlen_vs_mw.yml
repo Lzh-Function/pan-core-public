@@ -1,0 +1,8 @@
+# Config for 18_seqlen_vs_mw.py
+# Usage: python analysis/scripts/visualize/18_seqlen_vs_mw.py --config analysis/configs/individual/18_seqlen_vs_mw.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+# Per-molecule CSVs with columns seqlen and mw (paper: ZINC_summary.csv, pubchem_summary.csv).
+zinc_summary: /path/to/ZINC_summary.csv
+pubchem_summary: /path/to/pubchem_summary.csv
+output_dir: /path/to/figures/seqlen_vs_mw

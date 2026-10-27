@@ -1,0 +1,23 @@
+# Config for 04_latent_trajectory.py
+# Usage: python analysis/scripts/compute/04_latent_trajectory.py --config analysis/configs/individual/04_latent_trajectory.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+model_name: your_model
+checkpoint_dir: /path/to/your_model/checkpoints
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/valid_10k.csv
+output_dir: /path/to/results/latent_trajectory
+
+# ── Optional (paper settings shown) ───────────────────────────────────────────
+src_col: canonical   # encoder input (the paper encoded the canonical SMILES)
+tgt_col: canonical   # chiral split: '@' in this column
+seed: 42
+batch_size: 256
+max_len: 512
+
+# Analyse only one 1-based block of max_phase equal blocks (paper: phase 1 of 5 = ZINC20).
+phase: 1
+max_phase: 5
+
+# Subset of training steps; null = all checkpoints.
+checkpoint_steps: ~

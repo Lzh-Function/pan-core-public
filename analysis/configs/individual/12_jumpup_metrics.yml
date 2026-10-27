@@ -1,0 +1,19 @@
+# Config for 12_jumpup_metrics.py
+# Usage: python analysis/scripts/visualize/12_jumpup_metrics.py --config analysis/configs/individual/12_jumpup_metrics.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+# input_dir contains {model_name}/ trajectory files from analysis 03.
+input_dir: /path/to/results/jumpup_metrics
+output_dir: /path/to/figures/jumpup_metrics
+
+# ── Optional ──────────────────────────────────────────────────────────────────
+# Omit models to auto-discover model subdirectories.
+models:
+  - your_model
+
+encoder_only: false
+top_n_heads: 3
+jump_threshold_ratio: 0.15
+jump_ignore_initial_n: 10
+figsize_heatmap: [18, 10]
+figsize_line: [12, 6]

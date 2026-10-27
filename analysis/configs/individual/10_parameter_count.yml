@@ -1,0 +1,8 @@
+# Config for 10_parameter_count.py
+# Usage: python analysis/scripts/compute/10_parameter_count.py --config analysis/configs/individual/10_parameter_count.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+output_dir: /path/to/results/parameter_count
+# label -> checkpoint directory (containing config.json) or a config.json path.
+models:
+  your_model: /path/to/your_model/checkpoints/checkpoint-500

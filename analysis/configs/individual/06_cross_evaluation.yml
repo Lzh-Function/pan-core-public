@@ -1,0 +1,26 @@
+# Config for 06_cross_evaluation.py
+# Usage: python analysis/scripts/compute/06_cross_evaluation.py --config analysis/configs/individual/06_cross_evaluation.yml
+#
+# This script swaps encoder/decoder weights between pre-jump and post-jump checkpoints
+# to isolate which component drives chirality learning (paper Table 3 / S4).
+# The paper used the start and end of the jump-up interval detected by analysis 03
+# (e.g. pancore-addonce: checkpoint-39000 and checkpoint-48000); the end-to-end runner
+# resolves these automatically.
+
+# ── Required ──────────────────────────────────────────────────────────────────
+model_name: your_model
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/valid_10k.csv
+output_dir: /path/to/results/cross_evaluation
+
+pre_jump_checkpoint: /path/to/your_model/checkpoints/checkpoint-10000
+post_jump_checkpoint: /path/to/your_model/checkpoints/checkpoint-25000
+
+# ── Optional (defaults shown = paper run) ─────────────────────────────────────
+src_col: random
+tgt_col: canonical
+seed: 42
+batch_size: 1024
+max_length: 402
+use_bf16: false      # the paper run encoded and decoded in fp32
+n_phases: 5          # per-bucket metrics over n_phases equal consecutive blocks

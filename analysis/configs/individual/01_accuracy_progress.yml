@@ -1,0 +1,24 @@
+# Config for 01_accuracy_progress.py
+# Usage: python analysis/scripts/compute/01_accuracy_progress.py --config analysis/configs/individual/01_accuracy_progress.yml
+
+# ── Required ──────────────────────────────────────────────────────────────────
+model_name: your_model                              # arbitrary label used in output filenames
+checkpoint_dir: /path/to/your_model/checkpoints    # directory containing checkpoint-* subdirs
+tokenizer_path: /path/to/vocab/normal_tokens.txt
+eval_data: /path/to/valid_10k.csv                   # n_phases equal consecutive length buckets
+output_dir: /path/to/results/accuracy
+
+# ── Optional (defaults shown = paper run) ─────────────────────────────────────
+src_col: random      # column name for encoder input in eval_data
+tgt_col: canonical   # column name for decoder target in eval_data
+seed: 42
+batch_size: 3584
+max_length: 402      # max generation length in tokens
+use_bf16: true       # bf16 autocast for the decoder loop
+n_phases: 5          # number of equal consecutive buckets in eval_data
+# Teacher-forced token accuracy (paper Fig 3, Methods), fp32, in addition to the free-running one.
+teacher_forced_token_accuracy: true
+teacher_forced_batch_size: 500
+
+# Subset of training steps; null = all checkpoints in checkpoint_dir.
+checkpoint_steps: ~

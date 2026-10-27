@@ -1,0 +1,123 @@
+[project]
+name = "pan-core"
+version = "0.1.0"
+description = "PanCORE: Transformer-based pan-chemical molecular representations framework"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Zehao Li (Takuho Ri)" }]
+keywords = ["cheminformatics", "SMILES", "transformer", "molecular-representation", "latent-space"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.0.0",
+    # Upper bound, not a pin: transformers 5.x changed PreTrainedModel to defer
+    # buffer initialisation to a meta device, which leaves this model's
+    # non-persistent RoPE buffers uninitialised.
+    "transformers>=4.50,<5",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "polars>=0.19.0",
+    "pyarrow>=12.0.0",
+    "rdkit>=2023.3.1",
+    "tqdm>=4.64.0",
+    "pyyaml>=6.0",
+    "schedulefree>=1.0",
+    "zclip>=0.1.0",
+    "wandb>=0.15.0",
+    # Not imported directly: the HuggingFace Trainer requires it.
+    "accelerate>=1.0.0",
+]
+
+[project.optional-dependencies]
+# Which PyTorch build to install. With uv, `--extra cu130` / `--extra cu128` take
+# torch from the PyTorch CUDA 13.0 / 12.8 index and `--extra cpu` from the CPU-only
+# index (see [tool.uv.sources] below). The CUDA 12.8 index stops at an older torch
+# release; use it only for drivers that cannot run CUDA 13. pip ignores these
+# indexes, so pip users install torch with --index-url first (README, Installation).
+# Without any of them, torch comes from PyPI, whose Linux wheels include CUDA.
+cpu = ["torch>=2.0.0"]
+cu128 = ["torch>=2.0.0"]
+cu130 = ["torch>=2.0.0"]
+dev = ["pytest>=7.0", "ruff>=0.5"]
+# Only needed by analysis/; src/pan_core imports none of these.
+analysis = [
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "scikit-learn>=1.3.0",
+    "scipy>=1.11.0",
+    "safetensors>=0.4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mizuno-group/pan-core"
+Repository = "https://github.com/mizuno-group/pan-core"
+Issues = "https://github.com/mizuno-group/pan-core/issues"
+
+[project.scripts]
+pan-core = "pan_core.main:main"
+
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pan_core = ["py.typed"]
+
+# PyTorch build selection for uv (see the cpu / cu128 / cu130 extras above).
+[tool.uv]
+conflicts = [[{ extra = "cpu" }, { extra = "cu128" }, { extra = "cu130" }]]
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cpu", extra = "cpu" },
+    { index = "pytorch-cu128", extra = "cu128" },
+    { index = "pytorch-cu130", extra = "cu130" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "SIM", "RUF"]
+ignore = [
+    "E501",    # long lines are allowed up to the limit above; tensor code runs wide
+    "RUF002",  # typographic dashes and signs in docstrings are intentional
+    "RUF003",  # the same, in comments
+    "SIM102",  # the nested conditions carry explanatory comments between them
+    "SIM117",  # collapsing the decode loops' nested `with` would re-indent the body
+    "SIM108",  # explicit if/else reads better than a long ternary in the attention
+               # and residual paths, where the branches are the point
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
