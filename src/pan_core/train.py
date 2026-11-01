@@ -143,6 +143,8 @@ class SetEpochCallback(TrainerCallback):
 
         epoch = self._next_epoch
         self._next_epoch += 1
+        # The epoch's iterator starts after this call; saving counts trained batches from here.
+        self.trainer._epoch_start_step = state.global_step
 
         logger.info(f"***** Epoch[{epoch}] *****")
         if hasattr(self.trainer, "sampler") and self.trainer.sampler is not None:
@@ -334,7 +336,13 @@ class HF_Trainer(Trainer):
         state_path = os.path.join(output_dir, f"sampler_rank{self.args.process_index}.pth")
 
         try:
-            sampler_state = self.sampler.state_dict()
+            if isinstance(self.sampler, DynamicBucketDistributedSampler):
+                # One batch per optimizer step; the live counters also hold the prefetched batches.
+                start = getattr(self, "_epoch_start_step", None)
+                consumed = None if start is None else self.state.global_step - start
+                sampler_state = self.sampler.state_dict(consumed=consumed)
+            else:
+                sampler_state = self.sampler.state_dict()
             torch.save(sampler_state, state_path)
         except Exception as e:
             logger.error(f"Failed to save sampler state: {e}")

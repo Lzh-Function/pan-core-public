@@ -54,8 +54,7 @@ def _epochs(sampler, epochs):
 
 
 def test_resume_continues_the_same_order():
-    # Resumed at an epoch boundary: within an epoch the bucket draws restart from
-    # the epoch seed, so that is the point a resume reproduces exactly. Epoch 0
+    # Resumed at an epoch boundary (mid-epoch resumes: test_mid_epoch_state_skips_no_batch). Epoch 0
     # spends 20 steps over buckets of 37/23/11 split two ways, so several buckets
     # are already past their first reshuffle when the state is taken.
     whole = _epochs(_sampler(), [0, 1, 2])
@@ -111,3 +110,46 @@ def test_state_dict_does_not_carry_the_indices():
     state = s.state_dict()
     assert "persistent_indices_per_bucket_rank" not in state
     assert all(not isinstance(v, (list, torch.Tensor)) or len(v) <= 3 for v in state.values())
+
+
+@pytest.mark.parametrize("consumed, prefetched", [(0, 4), (7, 5), (13, 7), (20, 0)])
+def test_mid_epoch_state_skips_no_batch(consumed, prefetched):
+    # A DataLoader with workers asks for batches ahead of training, so the live
+    # counters run ahead of the trained steps. The state saved for the trained
+    # steps must make the resumed run take exactly the batches an uninterrupted
+    # run takes, with the epoch still 20 steps long (it used to end short by the
+    # prefetched batches).
+    whole = _epochs(_sampler(), [0, 1, 2])
+    per_epoch = len(whole) // 3
+
+    first = _sampler()
+    first.set_epoch(0)
+    taken = list(itertools.islice(iter(first), min(consumed + prefetched, per_epoch)))
+    state = first.state_dict(consumed=consumed)
+
+    resumed = _sampler()
+    resumed.load_state_dict(state)
+    rest = _epochs(resumed, [0, 1, 2]) if consumed < per_epoch else _epochs(resumed, [1, 2])
+
+    assert taken[:consumed] + rest == whole
+
+
+def test_resume_across_two_mid_epoch_saves():
+    whole = _epochs(_sampler(), [0, 1, 2])
+
+    first = _sampler()
+    first.set_epoch(0)
+    head = list(itertools.islice(iter(first), 9))[:6]
+    second = _sampler()
+    second.load_state_dict(first.state_dict(consumed=6))
+    second.set_epoch(0)
+    it = iter(second)
+    mid = list(itertools.islice(it, 14))  # the rest of epoch 0
+    assert next(it, None) is None
+    second.set_epoch(1)
+    mid += list(itertools.islice(iter(second), 8))[:5]
+    third = _sampler()
+    third.load_state_dict(second.state_dict(consumed=5))
+    rest = _epochs(third, [1, 2])
+
+    assert head + mid + rest == whole

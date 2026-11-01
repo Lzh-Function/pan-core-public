@@ -894,6 +894,13 @@ class DynamicBucketDistributedSampler(Sampler[_T_co]):
         self.reshuffle_counters: list[int] = [0] * num_buckets
         self._is_setup = False
 
+        # The DataLoader asks for batches ahead of training (worker prefetch), so the
+        # live counters run ahead of what has been trained. __iter__ records the
+        # counters after every batch it hands out, keyed by optimizer_steps_yielded,
+        # and state_dict(consumed=...) saves the entry for the batches actually trained.
+        self._iter_start = 0
+        self._snapshots: dict[int, tuple[list[int], list[int]]] = {}
+
     def _precalculate_probabilities_and_steps(self, start_probs, end_probs, update_last_epoch, max_epochs, total_optimizer_steps):
         """
         Pre-calculates the dynamic sampling probabilities and the number of optimizer
@@ -999,6 +1006,14 @@ class DynamicBucketDistributedSampler(Sampler[_T_co]):
         if self.optimizer_steps_yielded == optimizer_steps_target:
             self.optimizer_steps_yielded = 0
 
+        # Mid-epoch resume: replay the bucket draws of the batches already trained in
+        # this epoch, so the rest of it draws what an uninterrupted run would have.
+        for _ in range(self.optimizer_steps_yielded):
+            torch.multinomial(sampling_probs, 1, generator=g)
+        self._iter_start = self.optimizer_steps_yielded
+        self._snapshots = {self.optimizer_steps_yielded: (list(self.current_position_in_bucket),
+                                                          list(self.reshuffle_counters))}
+
         while self.optimizer_steps_yielded < optimizer_steps_target:
             # Choose a bucket based on the sampling probabilities.
             chosen_bucket_idx = torch.multinomial(sampling_probs, 1, generator=g).item()
@@ -1034,6 +1049,8 @@ class DynamicBucketDistributedSampler(Sampler[_T_co]):
                 # Negative sentinel appended as metadata: the collator reads it back
                 # as the accumulation-step count for this macro-batch.
                 macro_batch_indices.append(-1 * acc_steps)
+                self._snapshots[self.optimizer_steps_yielded + 1] = (list(self.current_position_in_bucket),
+                                                                     list(self.reshuffle_counters))
                 yield macro_batch_indices
                 self.optimizer_steps_yielded += 1
             else:
@@ -1052,7 +1069,7 @@ class DynamicBucketDistributedSampler(Sampler[_T_co]):
         """
         self.epoch = epoch
 
-    def state_dict(self):
+    def state_dict(self, consumed: int | None = None):
         """
         Returns the state of the sampler as a dictionary.
 
@@ -1061,12 +1078,29 @@ class DynamicBucketDistributedSampler(Sampler[_T_co]):
         enough to rebuild them. Storing them pickled a Python list holding this
         rank's share of every bucket into every checkpoint -- hundreds of MB per
         rank at the production scale.
+
+        Args:
+            consumed (int, optional): Batches of the current iteration that have
+                been trained. The state is then taken as of that batch rather than
+                from the live counters, which include the batches the DataLoader
+                prefetched. Without it, a mid-epoch resume skips the prefetched
+                batches and the epoch ends that many steps short.
         """
+        yielded = self.optimizer_steps_yielded
+        positions, counters = self.current_position_in_bucket, self.reshuffle_counters
+        if consumed is not None and self._snapshots:
+            key = self._iter_start + consumed
+            if key in self._snapshots:
+                yielded = key
+                positions, counters = self._snapshots[key]
+            else:
+                logger.warning(f"sampler: no state recorded after {key} batches "
+                               f"(have {min(self._snapshots)}-{max(self._snapshots)}); saving the live state")
         return {
             "format": 2,
-            "optimizer_steps_yielded": self.optimizer_steps_yielded,
-            "current_position_in_bucket": self.current_position_in_bucket,
-            "reshuffle_counters": self.reshuffle_counters,
+            "optimizer_steps_yielded": yielded,
+            "current_position_in_bucket": list(positions),
+            "reshuffle_counters": list(counters),
             "_is_setup": self._is_setup,
             # Rebuilding is only exact for the same split; checked on load.
             "seed": self.seed,
