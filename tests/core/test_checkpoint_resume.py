@@ -36,14 +36,15 @@ Epoch layout (max_steps=16, num_epochs=4 → steps_per_epoch=4):
     S=6  → [1, 2, 3]      (mid-epoch 1)  ← the bug's worst case
     S=8  → [2, 3]         (epoch-1 boundary)
 
-NOTE on global_step jitter
---------------------------
-With tiny toy buckets, HF Trainer's batch prefetch makes the *number of optimizer
-steps actually executed per epoch* fluctuate, so the final global_step differs
-between a clean run and a resumed run.  This is a toy-scale artefact: in real
-training (steps_per_epoch = 10_000) the ±1–2 jitter is negligible and never
-crosses an epoch boundary.  These tests therefore assert on the deterministic
-epoch sequence, not on exact step totals.
+Step totals
+-----------
+The DataLoader asks the sampler for batches ahead of training (HF Trainer's
+batch prefetch, and with workers num_workers x prefetch_factor more). The
+sampler state used to be saved from its live counters, so a mid-epoch resume
+skipped the prefetched batches and the epoch ended that many steps short -- 69
+steps with 16 workers in production, enough to stop a run before max_steps.
+The trainer now saves the state as of the trained steps, and
+test_resume_with_prefetching_workers_reaches_max_steps checks the exact totals.
 """
 
 import json
@@ -52,6 +53,7 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
+import torch
 import yaml
 
 from pan_core.common.data_handler import DynamicBucketDistributedSampler
@@ -322,3 +324,44 @@ def test_resume_chain(trained_run):
         f"Chained resume did not progress past step 8 (got {state.get('global_step')})"
     )
     _assert_log_monotonic(state.get("log_history", []), "resume-chain final")
+
+
+# Longer epochs than the module's toy layout, so the prefetch (1 worker x 2, plus
+# the Trainer's own one-batch lookahead) stays inside an epoch, as in production
+# (69 batches ahead in epochs of 10,000). With 4-step epochs the prefetch reaches
+# the epoch end and a bad state is hidden: the epoch restarts and max_steps caps it.
+PF_EPOCHS, PF_STEPS_PER_EPOCH = 2, 12
+PF_MAX_STEPS = PF_EPOCHS * PF_STEPS_PER_EPOCH
+
+
+@pytest.mark.parametrize("keep_step", [4, 12, 18])
+def test_resume_with_prefetching_workers_reaches_max_steps(tmp_path, keep_step):
+    """
+    With DataLoader workers, the sampler hands out batches ahead of training. Each
+    checkpoint must record only the trained batches of the epoch; otherwise a run
+    resumed mid-epoch skips the prefetched batches and stops short of max_steps
+    (in production it ended at 699,931 of 700,000).
+    """
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    out_dir = tmp_path / "out"
+    cfg = _make_config(str(VOCAB_FILE), *_write_csvs(data_dir))
+    cfg["system"].update({"num_workers": 1, "prefetch_factor": 2})
+    strategy = cfg["training"]["strategy"]
+    strategy["num_epochs"] = PF_EPOCHS
+    strategy["dynamic"].update({"max_steps": PF_MAX_STEPS, "sampling_update_last_epoch": PF_EPOCHS})
+    cfg_path = tmp_path / "config.yml"
+    cfg_path.write_text(yaml.dump(cfg))
+
+    assert _run(cfg_path, out_dir) == [0, 1]
+    for ckpt in out_dir.glob("checkpoint-*"):
+        step = int(ckpt.name.split("-")[1])
+        saved = torch.load(ckpt / "sampler_rank0.pth", weights_only=False)
+        assert saved["optimizer_steps_yielded"] == (step - 1) % PF_STEPS_PER_EPOCH + 1, ckpt.name
+    assert _load_state(_latest_checkpoint(out_dir))["global_step"] == PF_MAX_STEPS
+
+    _simulate_interrupt(out_dir, keep_step=keep_step)
+    assert _run(cfg_path, out_dir) == list(range(keep_step // PF_STEPS_PER_EPOCH, PF_EPOCHS))
+    final = _latest_checkpoint(out_dir)
+    assert final.name == f"checkpoint-{PF_MAX_STEPS}"
+    assert _load_state(final)["global_step"] == PF_MAX_STEPS
