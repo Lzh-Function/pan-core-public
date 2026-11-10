@@ -886,6 +886,18 @@ class HF_Trainer(Trainer):
         encoder_norm = _group_grad_norm(encoder_grads)
         decoder_norm = _group_grad_norm(decoder_grads)
 
+        # A non-finite gradient must not reach the optimizer: ZClip scales it by
+        # thresh / inf = 0, and inf * 0 turns every weight into NaN for good. The
+        # step is skipped by zeroing the gradients instead. Gradients are already
+        # all-reduced here, so every rank takes the same branch.
+        all_grads = [p.grad for p in model.parameters() if p.grad is not None]
+        if all_grads and not torch.isfinite(_group_grad_norm(all_grads)).item():
+            torch._foreach_zero_(all_grads)
+            self._nonfinite_steps = getattr(self, "_nonfinite_steps", 0) + 1
+            logger.warning(f"[step{self.state.global_step}] non-finite gradient, update skipped "
+                           f"({self._nonfinite_steps} so far in this process)")
+            return float("nan"), *_pull_to_host(encoder_norm, decoder_norm)
+
         if hasattr(self, "zclip"):
             grad_norm = self.zclip.step(model)
         elif self.args.max_grad_norm is not None:
